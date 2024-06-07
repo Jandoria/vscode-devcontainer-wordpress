@@ -9,7 +9,7 @@ ADMIN_EMAIL="admin@localhost.com"
 PLUGINS="advanced-custom-fields"
 
 #Set to true to wipe out and reset your wordpress install (on next container rebuild)
-WP_RESET=true
+WP_RESET=false
 
 
 echo "Setting up WordPress"
@@ -20,6 +20,18 @@ if $WP_RESET ; then
     wp plugin delete $PLUGINS
     wp db reset --yes
     rm wp-config.php;
+fi
+
+
+if [ -f $DEVDIR/data/restore/*.zip ]; then
+    echo "Restoring from zip backup"
+    
+    cp -r $DEVDIR/data/restore/* /var/www/html/;
+    rm -r $DEVDIR/data/restore/*;
+
+    unzip -o *.zip;
+
+    exit 0;
 fi
 
 if [ ! -f wp-config.php ]; then 
