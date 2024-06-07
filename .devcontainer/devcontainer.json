@@ -10,17 +10,23 @@
 	//"workspaceFolder": "/var/www/html/wp-content/themes/theme-dev",
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash",
-		"php.suggest.basic": false // avoids duplicate autocomplete
-	},
 
-	// Add the IDs of any extensions you want installed.
-	"extensions": [
-		"felixfbecker.php-pack",
-		"wordpresstoolbox.wordpress-toolbox",
-		"johnbillion.vscode-wordpress-hooks"
-	],
+	"customizations": {
+		"vscode": {
+			"settings": { 
+				"terminal.integrated.shell.linux": "/bin/bash",
+				"php.suggest.basic": false, // avoids duplicate autocomplete,
+				"extensions.verifySignature": false // Cuts down verification time on extension install
+				
+			},
+			"extensions": [
+				"felixfbecker.php-pack",
+				"wordpresstoolbox.wordpress-toolbox",
+				"johnbillion.vscode-wordpress-hooks",
+				"GitHub.copilot"
+			]
+		}
+	},
 
 	// Sets up WordPress on container start.
 	"postCreateCommand": ".devcontainer/wp-setup.sh",
