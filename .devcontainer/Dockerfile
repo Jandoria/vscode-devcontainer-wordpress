@@ -13,7 +13,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - ; \
+RUN curl -sL https://deb.nodesource.com/setup_22.x | bash - ; \
 	apt-get install -y nodejs; \
 	rm -rf /var/lib/apt/lists/*;
 
@@ -36,10 +36,19 @@ RUN set -ex; \
 		opcache \
 		zip \
 	; \
-	pecl install imagick-3.4.4; \
-  	pecl install xdebug-2.8.1; \
-	docker-php-ext-enable imagick xdebug;\
+#	pecl install imagick-3.4.4; \
+  	pecl install xdebug-3.3.2; \
+	docker-php-ext-enable xdebug;\
+#       docker-php-ext-enable imagick; \
 	rm -rf /var/lib/apt/lists/*
+
+# Workaround for imagick on PHP 8.3
+# @see https://github.com/Imagick/imagick/issues/643
+# @see https://github.com/Imagick/imagick/issues/643#issuecomment-2086949716
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions imagick/imagick@master
+
 
 #XDebug settings
 RUN echo "[XDebug]\nxdebug.remote_enable = 1\nxdebug.remote_autostart = 1" > $PHP_INI_DIR/conf.d/xdebug.ini
@@ -65,7 +74,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 #add vscode user
 RUN useradd -ms /bin/bash vscode \
-		&& usermod -aG www-data sudo vscode
+		&& usermod -aG www-data,sudo vscode
 
 WORKDIR /var/www/html
 USER www-data
