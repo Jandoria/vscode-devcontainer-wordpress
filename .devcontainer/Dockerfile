@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.3-apache
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 # Enable .htaccess files & mod_rewrite
@@ -9,7 +9,7 @@ RUN a2enmod rewrite
 #We don't inherit from it becase it has a VOLUME that causes issues
 RUN set -eux; \
 	apt-get update; \
-	apt-get install -y --no-install-recommends ghostscript git less ssh-client mariadb-client; \
+	apt-get install -y --no-install-recommends ghostscript git less ssh-client unzip vim mariadb-client; \
 	rm -rf /var/lib/apt/lists/*
 
 # install Node.js
@@ -65,7 +65,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 #add vscode user
 RUN useradd -ms /bin/bash vscode \
-		&& usermod -aG www-data vscode
+		&& usermod -aG www-data sudo vscode
 
 WORKDIR /var/www/html
 USER www-data
