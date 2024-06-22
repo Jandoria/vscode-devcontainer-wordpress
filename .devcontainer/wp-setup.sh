@@ -1,12 +1,15 @@
-#!  /bin/bash
+#!/bin/bash
+
+#This file is not necessary because moved the commands to the devcontainer.json file
+#because this script file was failed to execute as postCreateCommand
 
 #Site configuration options
 SITE_TITLE="Dev Site"
 ADMIN_USER=admin
-ADMIN_PASS=password
-ADMIN_EMAIL="admin@localhost.com"
+ADMIN_PASS=1234
+ADMIN_EMAIL="nayonwp@gmail.com"
 #Space-separated list of plugin ID's to install and activate
-PLUGINS="advanced-custom-fields"
+PLUGINS="woocommerce"
 
 #Set to true to wipe out and reset your wordpress install (on next container rebuild)
 WP_RESET=false
@@ -25,7 +28,7 @@ fi
 
 if [ -f $DEVDIR/data/restore/*.zip ]; then
     echo "Restoring from zip backup"
-    
+
     cp -r $DEVDIR/data/restore/* /var/www/html/;
     rm -r $DEVDIR/data/restore/*;
 
@@ -34,7 +37,7 @@ if [ -f $DEVDIR/data/restore/*.zip ]; then
     exit 0;
 fi
 
-if [ ! -f wp-config.php ]; then 
+if [ ! -f wp-config.php ]; then
     echo "Configuring";
     wp config create --dbhost="db" --dbname="wordpress" --dbuser="wp_user" --dbpass="wp_pass" --skip-check;
     wp core install --url="http://localhost:8080" --title="$SITE_TITLE" --admin_user="$ADMIN_USER" --admin_email="$ADMIN_EMAIL" --admin_password="$ADMIN_PASS" --skip-email;

@@ -51,7 +51,8 @@ RUN install-php-extensions imagick/imagick@master
 
 
 #XDebug settings
-RUN echo "[XDebug]\nxdebug.remote_enable = 1\nxdebug.remote_autostart = 1" > $PHP_INI_DIR/conf.d/xdebug.ini
+#the dugugging should be enabled from the command line using 'export XDEBUG_MODE=debug'
+RUN echo "[XDebug]\nxdebug.mode=off\nxdebug.start_with_request=yes" > $PHP_INI_DIR/conf.d/xdebug.ini
 
 #WP recommended PHP settings
 RUN { \
