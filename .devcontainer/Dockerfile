@@ -78,6 +78,10 @@ RUN useradd -ms /bin/bash vscode \
 		&& usermod -aG www-data,sudo vscode
 
 WORKDIR /var/www/html
+
+#Increase PHP memory limit
+RUN echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory-limit.ini
+
 USER www-data
 
 #Download WP
